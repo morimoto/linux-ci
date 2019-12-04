@@ -38,7 +38,10 @@ class makefile(base.base):
         if (self.makefile):
             self.makefile.close()
             if (not self.done):
-                os.remove(self._file)
+                # we can't use os.remove() in __del__()
+                self.print("========================")
+                self.print("do make clean")
+                self.print("========================")
 
     #--------------------
     # exist()
