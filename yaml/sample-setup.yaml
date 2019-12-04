@@ -1,0 +1,27 @@
+# kernel: Linux Kernel location
+kernel: /home/your/linux
+
+# log: Recording Log
+#
+# 1: yes, keep CI eventhough compile failed.
+# 0: no,  Stop CI if compile failed. (For Gitlab)
+log: 1
+
+# mail: Email address
+#
+# You need to setup ~/.mailrc
+#mail: your@mail.com
+
+# jobs: number of jobs
+#
+# used as "make -j ${jobs}"
+#jobs: 12
+
+# git-hook update settings
+#
+#	> cd linux-ci
+#	> git remote update --prune
+#	> git checkout ${ci_branch}
+#	> ./linux-ci ${ci_yaml}
+ci_branch: origin/master
+ci_yaml: yaml/all-arch.yaml

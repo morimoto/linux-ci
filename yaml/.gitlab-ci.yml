@@ -1,0 +1,110 @@
+# Japanese help: https://qiita.com/ynott/items/1ff698868ef85e50f5a1
+variables:
+  # custom here
+  LINUXCI: https://gitlab.com/morimoto.kuninori/linux-ci.git
+  BRANCH:  master
+
+.linux-ci: &linux-ci
+  script:
+    - apt update
+    - apt install -y python3-pip
+    - apt install -y flex
+    - apt install -y bison
+    - apt install -y ncurses-dev
+    - apt install -y libssl-dev
+    - apt install -y libelf-dev
+    - apt install -y u-boot-tools
+    - apt install -y bc
+    - apt install -y cpio
+    - pip3 install pyyaml
+    - git clone ${LINUXCI}
+    - cd linux-ci
+    - git checkout ${BRANCH}
+    - echo "kernel:${NULL} ../"	 > yaml/setup.yaml
+    - ./script/makefile.py -c ${CONFIG}
+    - cat make.ci
+    - make
+
+# custom here
+x86-allyesconfig:
+  <<: *linux-ci
+  variables:
+    CONFIG: x86-allyesconfig
+
+# custom here
+x86-allmodconfig:
+  <<: *linux-ci
+  variables:
+    CONFIG: x86-allmodconfig
+
+# custom here
+arm-allyesconfig:
+  <<: *linux-ci
+  variables:
+    CONFIG: arm-allyesconfig
+
+# custom here
+arm-allmodconfig:
+  <<: *linux-ci
+  variables:
+    CONFIG: arm-allmodconfig
+
+# custom here
+arm64-allyesconfig:
+  <<: *linux-ci
+  variables:
+    CONFIG: arm64-allyesconfig
+
+# custom here
+arm64-allmodconfig:
+  <<: *linux-ci
+  variables:
+    CONFIG: arm64-allmodconfig
+
+# custom here
+sh-allyesconfig:
+  <<: *linux-ci
+  variables:
+    CONFIG: sh-allyesconfig
+
+# custom here
+sh-allmodconfig:
+  <<: *linux-ci
+  variables:
+    CONFIG: sh-allmodconfig
+
+# custom here
+mips-allyesconfig:
+  <<: *linux-ci
+  variables:
+    CONFIG: mips-allyesconfig
+
+# custom here
+mips-allmodconfig:
+  <<: *linux-ci
+  variables:
+    CONFIG: mips-allmodconfig
+
+# custom here
+powerpc-allyesconfig:
+  <<: *linux-ci
+  variables:
+    CONFIG: powerpc-allyesconfig
+
+# custom here
+powerpc-allmodconfig:
+  <<: *linux-ci
+  variables:
+    CONFIG: powerpc-allmodconfig
+
+# custom here
+xtensa-allyesconfig:
+  <<: *linux-ci
+  variables:
+    CONFIG: xtensa-allyesconfig
+
+# custom here
+xtensa-allmodconfig:
+  <<: *linux-ci
+  variables:
+    CONFIG: xtensa-allmodconfig

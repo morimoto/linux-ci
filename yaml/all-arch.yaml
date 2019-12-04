@@ -1,0 +1,15 @@
+target:
+  - x86-allyesconfig
+  - x86-allmodconfig
+  - arm-allyesconfig
+  - arm-allmodconfig
+  - arm64-allyesconfig
+  - arm64-allmodconfig
+  - sh-allyesconfig
+  - sh-allmodconfig
+  - mips-allyesconfig
+  - mips-allmodconfig
+  - powerpc-allyesconfig
+  - powerpc-allmodconfig
+  - xtensa-allyesconfig
+  - xtensa-allmodconfig

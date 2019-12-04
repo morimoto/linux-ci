@@ -1,0 +1,234 @@
+#! /usr/bin/env python3
+#===============================
+#
+# base
+#
+# 2019/11/18 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+#===============================
+import os
+import sys
+import subprocess
+import yaml
+import re
+
+#====================================
+#
+# base
+#
+#====================================
+class base:
+    __top = os.path.abspath(__file__ + "/../../");
+
+    # "arch" will be used for make
+    #	ARM=arm make xxxx
+    #
+    # "gcc", "gcc_opt" will be used for gcc name
+    #	x86_64-gcc-8.1.0-nolibc-aarch64-linux.tar.xz
+    __architecture = {
+        # arch		gcc		gcc_opt
+        "x86":		{"gcc":"x86_64"},
+        "arm":		{"gcc":"arm",	"gcc_opt":"-gnueabi"},
+        "arm64":	{"gcc":"aarch64"},
+        "sh":		{"gcc":"sh4"},
+        "mips":		{"gcc":"mips"},
+        "powerpc":	{"gcc":"powerpc64"},
+        "xtensa":	{"gcc":"xtensa"},
+    };
+
+    #--------------------
+    # exit()
+    #
+    # it is used not under try-except
+    #--------------------
+    def die(self, text):
+        self.print("========================")
+        self.print(text)
+        self.print("========================")
+        sys.exit(1)
+
+    #--------------------
+    # error()
+    #
+    # it is used under try-except
+    #--------------------
+    def error(self, text):
+        self.print("========================")
+        self.print(text)
+        self.print("========================")
+        raise Exception(text)
+
+    #--------------------
+    # dir_top()
+    #--------------------
+    def dir_top(self):
+        return base.__top
+
+    #--------------------
+    # file_setup()
+    #--------------------
+    def file_setup(self):
+        return "{}/yaml/setup.yaml".format(self.dir_top())
+
+    #--------------------
+    # arch_all()
+    #--------------------
+    def arch_all(self):
+        return base.__architecture.keys()
+
+    #--------------------
+    # arch_info()
+    #--------------------
+    def arch_info(self, arch):
+        if (arch in base.__architecture):
+            return base.__architecture[arch];
+        self.error("{} is not supported".format(arch))
+
+    #--------------------
+    # print
+    #--------------------
+    def print(self, text):
+        print(text, flush=True)
+
+    #--------------------
+    # run()
+    #
+    # do command
+    #--------------------
+    def run(self, command):
+        return subprocess.run(command, shell=True).returncode
+
+    #--------------------
+    # do()
+    #
+    # do command, use return
+    #--------------------
+    def do(self, command):
+        return re.sub(r"\n$", r"",
+                      subprocess.check_output(command.split()).decode())
+
+#====================================
+#
+# yml
+#
+#====================================
+class yml:
+
+    #--------------------
+    # __init__
+    #--------------------
+    def __init__(self, file):
+        if (not os.path.exists(file)):
+            base().die("no file ({})".format(file))
+
+        with open(file) as f:
+            self.data = yaml.safe_load(f)
+
+    #--------------------
+    # val()
+    #--------------------
+    def val(self, key):
+        return self.data.get(key)
+
+    #--------------------
+    # each_target()
+    #--------------------
+    def each_target(self):
+        for cfg in self.val("target"):
+            yield config(cfg)
+
+#====================================
+#
+# file
+#
+#====================================
+class file(base):
+
+    #--------------------
+    # __init__()
+    #--------------------
+    def __init__(self, name):
+        self._name = name
+
+    #--------------------
+    # name()
+    #--------------------
+    def name(self):
+        return self._name
+
+    #--------------------
+    # dir()
+    #--------------------
+    def dir(self):
+        return "{}/{}".format(self.dir_top(),
+                              self._dir)
+
+    #--------------------
+    # path()
+    #--------------------
+    def path(self):
+        return "{}/{}".format(self.dir(),
+                              self.name())
+    #--------------------
+    # exist()
+    #--------------------
+    def exist(self):
+        return os.path.exists(self.path())
+
+#====================================
+#
+# config
+#
+#====================================
+class config(file):
+
+    #--------------------
+    # __init__()
+    #--------------------
+    def __init__(self, name):
+        import linecache
+
+        self._dir = "config"
+        super(config, self).__init__(name)
+
+        if (not self.exist()):
+            self.die("not exist ({})".format(self.path()))
+
+        line = linecache.getline(self.path(), 3)
+        linecache.clearcache()
+
+        self._arch = re.match("# Linux/(.*) .* Kernel Configuration\n", line).group(1)
+
+    #--------------------
+    # arch()
+    #--------------------
+    def arch(self):
+        return self._arch
+
+#====================================
+#
+# binary
+#
+#====================================
+class binary(file):
+
+    #--------------------
+    # __init__()
+    #--------------------
+    def __init__(self, config):
+        self._dir = "binary"
+        self._config = config
+
+        super(binary, self).__init__(config.name())
+
+#====================================
+# chdir
+#====================================
+class chdir(base):
+    def __init__(self, dir):
+        self.dir = dir
+
+    def __enter__(self):
+        os.chdir(self.dir)
+
+    def __exit__(self, exception_type, exception_value, traceback):
+        os.chdir(self.dir_top())

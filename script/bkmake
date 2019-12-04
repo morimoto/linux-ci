@@ -1,0 +1,10 @@
+#! /bin/sh
+#===============================
+#
+# bkmake
+#
+# 2019/11/27 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+#===============================
+cd `dirname $0`/../ # goto Linux-CI top
+nohup make $@ >/dev/null 2>&1 </dev/null &
+echo "Linux-CI had started as PID $!."

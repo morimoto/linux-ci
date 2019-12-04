@@ -1,0 +1,351 @@
+============== -*- outline -*- ==============
+
+                Linux-CI
+
+2019/11/20	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+
+* Linux-CI とは？
+
+	Linux Kernel を開発していると、特定環境下ではコンパイルが
+	通らなくなっている場合があり、しかも、それに気づかない場合が多い。
+	Linux-CI を使う事であらゆる環境でのコンパイルテストをする事で
+	そのような問題を事前に察知する事を目的としている
+
+	Linux-CI は「自前の環境」「リモート環境」「Gitlab」で
+	使用される事を想定している。
+	「Github」もターゲットに入っているが、現在調査中。
+
+* Kernel-CI と何が違うの？
+
+	Kernel-CI も似たような事をしているが、規模が大きすぎたり
+	大げさ過ぎる。単にコンパイルを自動化したいだけなら Linux-CI。
+
+* ローカルマシンで好きな時に使う
+
+	ローカルマシンで、好きなタイミングで Linux-CI を実行する
+	ための方法です。リモート環境で使う場合、Gitlab で使う場合の
+	基本となります
+
+**  Linux-CI を clone する
+
+	以下のいづれかで clone
+
+		> git clone git@gitlab.com:morimoto.kuninori/linux-ci.git
+		> git clone https://gitlab.com/morimoto.kuninori/linux-ci.git
+
+		> git clone git@github.com:morimoto/linux-ci.git
+		> git clone https://github.com/morimoto/linux-ci.git
+
+**  yaml/sample-setup.yaml をベースに yaml/setup.yaml を作成 (必須)
+
+	Linux Kerenl の位置、mail、ジョブ数等を設定するため、
+	yaml/sample-setup.yaml をコピーし、yaml/setup.yaml を編集する
+	「yaml」章を参照
+
+		> cp yaml/sample-setup.yaml yaml/setup.yaml
+		> vi yaml/setup.yaml
+
+**  自分用 Linux Kernel config を作成する (オプション)
+
+	自分専用にコンパイルテストしたい config があるなら、
+	それを作成し、config フォルダ以下に適当な名前で配置する
+	とりあえず試すだけなら不要
+
+		> cp ${YOUR}/.config config/my-config
+
+**  yaml/xx.yaml をベースにコンパイル対象等を設定 (オプション)
+
+	Linux-CI は config ファイルを元にコンパイルするが、
+	どの config を使用するかを選択する必要がある。
+	自分専用のコンパイルをする場合、コンパイル対象を yaml で記述する
+
+	yaml/all-arch.yaml はサポート済みの全てのアーキテクチャで、
+	全てのドライバをコンパイルする設定が書いてあるが、
+	設定を理解するのは簡単
+
+		--- yaml/all-arch.yaml ---
+		target:
+		  - x86-allyesconfig
+		  - x86-allmodconfig
+		  ...
+		--------------------------
+
+	ここに書かれている x86-allyesconfig, x86-allmodconfig は
+	config フォルダ以下に見つけることが出来る。
+
+**  実行する
+
+		> make all-arch
+
+	とした場合、yaml/all-arch.yaml を使用し Linux-CI がスタートする
+
+	各コンパイルは binary 以下で実行され、
+	yaml/setup.yaml に log の設定があれば実行結果はそれぞれの
+	フォルダ内の log ファイルに保存される。
+
+	コンパイル結果はそれぞれの log を参照するか、または、
+	setup.yaml に mail が設定されている場合はメールで送られる。
+
+	コンパイルをバックグラウンドで実行しておきたい場合は
+	以下のコマンドを使う
+
+		> script/bkmake all-arch
+
+	または、yaml ファイルを書かなくても、以下の方法で個別に
+	実行する事も可能
+
+		> script/makefile.py -c sh-allyesconfig
+		> make
+
+***	注意1
+
+	Linux-CI は yaml/setup.yaml ファイルの kernel に指定されている
+	Linux Kernel をそのまま使用します。
+	Linux-CI で使用する branch を事前に checkout しておく必要が有ります
+
+***	注意2
+
+	Linux-CI はバイナリを binary ディレクトリ以下に出力します。
+	そのため、Linux Kernel は事前に make mrproper がされている
+	必要が有ります。
+
+***	注意3
+
+	Linux-CI は make xxx を実行すると、make.ci と言う
+	ファイルを作成し実行します。
+
+	万が一 make に失敗した場合、もう一度 make xxx を実行しても
+	"previous make not yet finished" と言うエラーを出力します。
+
+	その場合は、以下を試してください
+
+		前回の make を続ける
+		> make
+
+		前回の make を取り消す
+		> make clean
+
+***     注意4
+
+	yaml に書いた設定順序とは違う順番でコンパイルされます。
+	yaml 自体が順番を気にしない事が原因です。
+
+* リモート環境で好きな時に使う
+
+	リモートにコンパイルマシンを持っている場合などに、
+	リモートマシンで Linux-CI を実行する場合の手順です。
+
+	設定ができれば、リモートマシンで Linux-CI を実行させ、
+	ローカルマシンは電源を切ることが出来ます
+
+**  リモートマシンで下準備
+
+	リモートマシン上で「ローカルマシンで好きな時に使う」と同じ設定をする。
+
+**  ローカルマシンからリモートマシンに指示を出す
+
+	${REMOTE}:  リモートマシンの IP アドレス
+	${LINUX}:   リモートマシン上の Linux Kernel の展開場所
+	${LINUXCI}: リモートマシン上の Linux-CI の展開場所
+	${BRANCH}:  ${LINUX} でのコンパイル対象のブランチ/コミット
+
+	# リモートマシン上でターゲット branch を checkout する
+	> ssh ${REMOTE} git -C ${LINUX} checkout ${BRANCH}
+
+	# リモートマシン上でコンパイル状況を確認しながら Linux-CI を実行
+	> ssh ${REMOTE} "cd ${LINUXCI}; make all-arch"
+
+	# リモートマシンで Linux-CI を実行。
+	# ローカルマシンは電源を切って帰宅する
+	> ssh -f ${REMOTE} ${LINUXCI}/script/bkmake all-arch
+	> sudo shutdown -h now
+
+* Git サーバーに hook をつけて実行する
+
+	リモートマシン上に Linux Kernel のリポジトリを置いている場合、
+	リモートマシンに git push をしたタイミングで自動的に Linux-CI
+	を実行させることが出来ます
+
+**  想定環境
+
+	${REMOTE}:  Git サーバーの IP アドレス
+	${GIT}:     Git サーバー上の Git リポジトリの場所
+	${LINUX}:   Git サーバー上の Linux Kernel の展開場所
+	${LINUXCI}: Git サーバー上の Linux-CI の展開場所
+
+	ローカル環境では、このように Git サーバーから clone します
+	> git clone ${REMOTE}:/${GIT}
+
+	Git サーバー上では、予め Linux Kernel と Linux-CI を展開し、
+	「ローカルマシンで好きな時に使う」と同じ設定をしておきます
+
+**  Git hook を仕掛ける
+
+	Git サーバー上のリポジトリにローカルマシンから 「git push」が
+	あったした場合に起動するスクリプト設定します。
+
+		-- ${GIT}/hook/update --
+		${LINUXCI}/script/makefile.py -p $@
+
+		-- ${GIT}/hook/post-receive --
+		${LINUXCI}/script/bkmake
+
+	それぞれスクリプトなので実行権限を与えます
+
+		> chmod +x ${GIT}/hook/update
+		> chmod +x ${GIT}/hook/post-receive
+
+***     注意1
+
+	Git サーバー上で、Linux-CI を実行する為に Linux-CI の他に
+	Linux Kernel も用意する必要が有りますが、
+	どちらも git push 時にリポジトリの更新や checkout をします。
+	Git サーバーに Linux-CI を仕掛けた場合は、
+	以降 Linux-CI / Linux Kernel を手動でいじらないで下さい
+
+***     注意2
+
+	git push した際、サーバー側で Linux Kernel リポジトリの更新
+	を行うため、Linux CI の開始までに時間がかかります。
+	根気よく待ちましょう
+
+***     注意3
+
+	git push 時に "previous make not yet finished" と言われた場合、
+	前回 push 時の Linux-CI がまだ動いているか、または何らかの
+	エラーが発生して止まっている可能性が有ります。
+
+	前回の Linux-CI がまだ動いているなら、終わるまで待ちましょう
+
+	エラーが発生して止まっているなら、サーバー上で自力で
+	${LINUXCI}/make をするか、
+	${LINUXCI}/make clean してファイルを削除してください
+
+* Gitlab で使う
+
+	Linux-CI は Gitlab の CI/CD で実行する事も出来ます
+	ただし、無料で使用できる時間は制限されているようです
+
+**  Linux Kernel に .gitlab-ci.yml を用意する (必須)
+
+	Gitlab は push したリポジトリが .gitlab-ci.yml を持っている場合、
+	その指示に沿って CI マシンを動かす仕組みになっています。
+	Gitlab で CI/CD を自動で実行させるための仕掛けを用意します
+
+***     .gitlab-ci.yml をコピー
+
+	Linux-CI に用意されている Gitlab 用のファイルを
+	Linux Kernel にコピーする
+
+	> cp ${LINUXCI}/yaml/.gitlab-ci.yaml ${LINUX}
+
+***     .gitlab-ci.yml を編集
+
+	環境に合わせ使用する Linux-CI やコンパイル対象を設定するため、
+	"custom here" の箇所を編集します
+
+	> vi ${LINUX}/.gitlab-ci.yaml
+
+	Gitlab では複数のコンパイルを同時に実行できます
+	とりあえず使いたい場合でも編集してください
+	要「注意2」
+
+***     .gitlab-ci.yml を git add (必須)
+
+	.gitlab-ci.yml を Linux Kernel の git 管理下に置く
+	Linux Kernel では -f をつけないと add できないので注意
+
+		> git add -f .gitlab-ci.yml
+
+**  Gitlab へ push (必須)
+
+	あとはそのまま Gitlab へ push する
+
+	git push gitlab xxxx
+
+	push した Gitlab ページの Linux プロジェクトのメニューから「CI/CD」
+	を選択すると「パイプライン」や「ジョブ」から実行状況や結果を見ること
+	が出来ます。
+
+***     注意1
+
+	Gitlab 自体に結果をメールで送る機能が有ります。
+	setup.yaml の設定ではなく Gitlab の設定でメールが届きます
+	そちらの機能を使ってメールを受け取ってください
+
+***     注意2
+
+	Linux-CI にサンプルで付いている .gitlab-ci.yml では
+	全 config を実行しようとしますが、膨大な時間がかかるため、
+	あっ　と言う間に Gitlab-Ci で無料で使用できる時間を消費してしまいます。
+	不要なモノは消しましょう
+
+***     注意3
+
+	Gitlab の CI/CD を無料で使用するのは上限があるようです。
+	それ以降は時間を購入するか、ローカルマシンを Gitlab Runner
+	として登録する必要があるようです
+
+* Github
+
+**  現在調査中
+
+* yaml/setup-yaml
+
+**  kernel (必須)
+
+	Linux Kernel への PATH
+
+** log (オプション)
+
+	1 : コンパイル時に log を取ります。
+	0 : コンパイル時に log を取りません。
+
+	1 の場合、コンパイルに失敗しても Linux-CI は全てのターゲットの
+	コンパイルをするまで止まりません。
+	0 の場合、コンパイルに失敗した段階で止まります
+
+**  mail (オプション)
+
+	コンパイル結果の log をメールで受け取る場合に指定します。
+	その際には、~/.mailrc の設定が別途必要になります
+
+	以下のコマンドを実行して、メールが届けば OK
+
+	> echo "Test mail" | mail -s "Test" xxx@xxx.com
+
+**  jobs (オプション)
+
+	make コマンドの -j オプションに渡す数
+	指定がない場合は 1 になる
+	マシンに合わせて設定するとコンパイルが早くなります
+
+**  ci_branch
+
+	git push した時に自動で実行される Linux-CI の設定です。
+	Linux-CI 自体を更新した後、ここで指定したブランチを
+	checkout します。
+	自前環境を作っている場合に便利です
+
+**  ci_yaml
+
+	git push した時に自動で実行される Linux-CI の設定です。
+	ここで指定した対象を Linux-CI を実行します
+
+* yaml/設定ファイル
+
+**  target
+
+	コンパイルに使用する config ファイル
+	${LINUX-CI}/config 以下に配置されている必要が有ります。
+	自分専用 config を使いたい場合は、config 以下に保存して起きましょう。
+
+* 管理
+
+	config/xxx-allyesconfig
+	config/xxx-allmodconfig
+
+	は、以下コマンドで自動的に更新可能
+
+		> script/makefile.py -s
