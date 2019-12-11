@@ -80,6 +80,10 @@
 
 	とした場合、yaml/all-arch.yaml を使用し Linux-CI がスタートする
 
+		> make x86-allyesconfig
+
+	とした場合、config/x86-allyesconfig を使用し Linux-CI がスタートする
+
 	各コンパイルは binary 以下で実行され、
 	yaml/setup.yaml に log の設定があれば実行結果はそれぞれの
 	フォルダ内の log ファイルに保存される。

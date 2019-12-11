@@ -1,4 +1,5 @@
 YAML	= $(subst .yaml,,$(subst yaml/,,$(shell ls ./yaml/*.yaml)))
+CONFIG	= $(shell ls ./config)
 
 all:
 	make -f make.ci
@@ -6,6 +7,10 @@ all:
 
 ${YAML}:
 	./script/makefile.py -y ./yaml/${@}.yaml
+	make
+
+${CONFIG}:
+	./script/makefile.py -c ${@}
 	make
 
 save_defconfig:
