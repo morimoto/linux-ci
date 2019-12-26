@@ -140,12 +140,12 @@ class makefile(base.base):
 
         self.write("all:")
 
-        for arch in base.base().arch_all():
+        for arch in self.arch_all():
             for config in ["allyesconfig", "allmodconfig"]:
                 self.write(" {}-{}".format(arch, config))
         self.write("\n\n")
 
-        for arch in base.base().arch_all():
+        for arch in self.arch_all():
 
             gcc.gcc(arch).install()
 
