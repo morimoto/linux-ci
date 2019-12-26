@@ -159,7 +159,8 @@ class makefile(base.base):
                 self.write("	cd {};\\\n".format(bin.path()))
                 self.write("	../../script/mymake.py {};\\\n".format(arch))
                 self.write("	./mymake {};\\\n".format(config))
-                self.write("	cp .config {}\n".format(cfg.path()))
+                self.write("	./mymake savedefconfig;\\\n")
+                self.write("	mv defconfig {}\n".format(cfg.path()))
                 self.write("\n")
 
         self.done = 1

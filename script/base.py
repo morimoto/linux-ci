@@ -193,10 +193,11 @@ class config(file):
         if (not self.exist()):
             self.die("not exist ({})".format(self.path()))
 
-        line = linecache.getline(self.path(), 3)
-        linecache.clearcache()
+        ret = re.match("(\w+)-.*config", name)
+        if (not ret):
+            self.die("unknown file name ({})".format(name))
 
-        self._arch = re.match("# Linux/(.*) .* Kernel Configuration\n", line).group(1)
+        self._arch = ret.group(1)
 
     #--------------------
     # arch()
