@@ -352,4 +352,4 @@
 
 	は、以下コマンドで自動的に更新可能
 
-		> script/makefile.py -s
+		> make save_defconfig
