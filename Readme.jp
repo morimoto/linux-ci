@@ -319,6 +319,11 @@
 
 	> echo "Test mail" | mail -s "Test" xxx@xxx.com
 
+** logerr (オプション)
+
+	コンパイル結果をメールする際、error や warning だけに絞る
+	コンパイルに成功した場合は空メールが届く
+
 **  jobs (オプション)
 
 	make コマンドの -j オプションに渡す数

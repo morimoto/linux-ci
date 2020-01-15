@@ -20,6 +20,8 @@ class mail(base.base):
     # __init__()
     #--------------------
     def __init__(self, config):
+        setup = base.yml(self.file_setup())
+        logerr = setup.val("logerr")
         mail = base.yml(self.file_setup()).val("mail")
         cfg = base.config(config)
         bin = base.binary(cfg)
@@ -34,8 +36,12 @@ class mail(base.base):
         if (not os.path.exists(log)):
             return
 
-        self.run("mail -s \"Linux-CI: {}\" {} < {}".
-                 format(config, mail, log))
+        if (logerr):
+            self.run("{}/script/logerr.sh {} | mail -s \"Linux-CI error: {}\" {}".
+                     format(self.dir_top(), log, config, mail))
+        else:
+            self.run("mail -s \"Linux-CI: {}\" {} < {}".
+                     format(config, mail, log))
 
 #====================================
 #

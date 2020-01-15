@@ -12,6 +12,11 @@ log: 1
 # You need to setup ~/.mailrc
 #mail: your@mail.com
 
+# logerr:
+# 1: Mail log error/warning only
+# 0: Mail all log
+#logerr: 1
+
 # jobs: number of jobs
 #
 # used as "make -j ${jobs}"
