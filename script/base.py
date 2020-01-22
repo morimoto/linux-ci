@@ -193,7 +193,7 @@ class config(file):
         if (not self.exist()):
             self.die("not exist ({})".format(self.path()))
 
-        ret = re.match("(\w+)-.*config", name)
+        ret = re.match("(\w+)-.*", name)
         if (not ret):
             self.die("unknown file name ({})".format(name))
 
