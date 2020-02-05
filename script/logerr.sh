@@ -5,4 +5,72 @@
 #
 # 2019/12/17 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 #===============================
-egrep -v "(^  MKELF|^  SHIPPED|^  STUBCPY|^  GEN|^  UPD|^  HDRINST|^  CC|^  CALL|^  AR|^  CHK|^  LD|^  GZIP|^  MODPOST|^  MODINFO|^  KSYM|^  SYSMAP|^  Building|^  DESCEND|^  HDRTEST|^  X32|^  VDSO|^  OBJCOPY|^  VDSO2C|^  EXPORTS|^  UNROLL|^  BIN2C|^  SORTEX|^  VOFFSET|^  RELOCS|^  HOSTCC|^  HOSTLD|^  MKPIGGY|^  AS|^  ZOFFSET|^  BUILD|^  TEST|^  Kernel:|^  DTC|^  ITS|^  ITB|^  WRAP|^Setup|^System|^CRC|^scripts|^Kernel|^make)" $@
+egrep -v "(\
+^  AR|\
+^  AS|\
+^  CC|\
+^  LD|\
+^  GEN|\
+^  UPD|\
+^  X32|\
+^  CHK|\
+^  DTC|\
+^  ITS|\
+^  ITB|\
+^  DTB|\
+^  CALL|\
+^  GZIP|\
+^  KSYM|\
+^  VDSO|\
+^  TEST|\
+^  WRAP|\
+^  LINK|\
+^  LOGO|\
+^  YACC|\
+^  MKELF|\
+^  BIN2C|\
+^  BUILD|\
+^  MKCAP|\
+^  CONMK|\
+^  TABLE|\
+^  SYSNR|\
+^  MUNGE|\
+^  SYSMAP|\
+^  UNROLL|\
+^  VDSO2C|\
+^  SORTEX|\
+^  RELOCS|\
+^  HOSTCC|\
+^  HOSTLD|\
+^  PASYMS|\
+^  SYSTBL|\
+^  SYSHDR|\
+^  REMOVE|\
+^  CPUSTR|\
+^  BOOTAS|\
+^  BOOTCC|\
+^  BOOTAR|\
+^  SHIPPED|\
+^  STUBCPY|\
+^  HDRINST|\
+^  MODPOST|\
+^  MODINFO|\
+^  DESCEND|\
+^  HDRTEST|\
+^  OBJCOPY|\
+^  EXPORTS|\
+^  VOFFSET|\
+^  MKPIGGY|\
+^  ZOFFSET|\
+^  PERLASM|\
+^  SORTTAB|\
+^  HYPERCALLS|\
+^  EXTRACT_CERTS|\
+^  Kernel:|\
+^  Building|\
+^CRC|\
+^Setup|\
+^System|\
+^Kernel|\
+^scripts|\
+^make)" $@
