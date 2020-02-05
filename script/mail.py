@@ -37,11 +37,11 @@ class mail(base.base):
             return
 
         if (logerr):
-            self.run("{}/script/logerr.sh {} | mail -s \"Linux-CI error: {}\" {}".
-                     format(self.dir_top(), log, config, mail))
+            self.run("{}/script/logerr.sh {} | mail -s \"Linux-CI error: {}: {}\" {}".
+                     format(self.dir_top(), log, os.uname()[1], config, mail))
         else:
-            self.run("mail -s \"Linux-CI: {}\" {} < {}".
-                     format(config, mail, log))
+            self.run("mail -s \"Linux-CI: {}: {}\" {} < {}".
+                     format(os.uname()[1], config, mail, log))
 
 #====================================
 #
