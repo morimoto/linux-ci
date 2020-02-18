@@ -22,6 +22,11 @@ log: 1
 # used as "make -j ${jobs}"
 #jobs: 12
 
+# ccache
+# 1: use ccache
+# 0: not use ccache
+# ccache: 1
+
 # git-hook update settings
 #
 #	> cd linux-ci

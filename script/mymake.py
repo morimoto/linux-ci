@@ -26,13 +26,15 @@ class mymake(base.base):
     # install()
     #--------------------
     def install(self):
+        ccache = base.yml(self.file_setup()).val("ccache")
         g = gcc.gcc(self._arch)
 
         file =  "mymake"
+        ccache = "ccache " if (ccache) else ""
 
         with open(file, mode="w") as f:
-            f.write("ARCH={} make CROSS_COMPILE=\"{}\" $@".
-                    format(self._arch, g.gcc()))
+            f.write("ARCH={} make CROSS_COMPILE=\"{}{}\" $@".
+                    format(self._arch, ccache, g.gcc()))
         os.chmod(file, 0o755)
 
 #====================================
