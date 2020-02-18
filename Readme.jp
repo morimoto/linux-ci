@@ -184,6 +184,14 @@
 	Git サーバー上では、予め Linux Kernel と Linux-CI を展開し、
 	「ローカルマシンで好きな時に使う」と同じ設定をしておきます
 
+** yaml/setup.yaml を設定する
+
+	yaml/setup.yaml で以下の 2 つの設定を有効化する。
+	これらは ${GIT}/hook/update から使用されます
+
+		ci_branch:
+		ci_yaml:
+
 **  Git hook を仕掛ける
 
 	Git サーバー上のリポジトリにローカルマシンから 「git push」が

@@ -33,5 +33,5 @@ log: 1
 #	> git remote update --prune
 #	> git checkout ${ci_branch}
 #	> ./linux-ci ${ci_yaml}
-ci_branch: origin/master
-ci_yaml: yaml/all-arch.yaml
+#ci_branch: origin/master
+#ci_yaml: yaml/all-arch.yaml
