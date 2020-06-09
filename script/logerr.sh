@@ -5,6 +5,7 @@
 #
 # 2019/12/17 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 #===============================
+sed -r "s/^\.+//"  $@ |
 egrep -v "(\
 ^  AR|\
 ^  AS|\
@@ -18,6 +19,7 @@ egrep -v "(\
 ^  ITS|\
 ^  ITB|\
 ^  DTB|\
+^  LEX|\
 ^  CALL|\
 ^  GZIP|\
 ^  KSYM|\
@@ -35,6 +37,8 @@ egrep -v "(\
 ^  TABLE|\
 ^  SYSNR|\
 ^  MUNGE|\
+^  MKDIR|\
+^  POLICY|\
 ^  SYSMAP|\
 ^  UNROLL|\
 ^  VDSO2C|\
@@ -64,13 +68,17 @@ egrep -v "(\
 ^  ZOFFSET|\
 ^  PERLASM|\
 ^  SORTTAB|\
+^  MKREGTABLE|\
 ^  HYPERCALLS|\
 ^  EXTRACT_CERTS|\
 ^  Kernel:|\
 ^  Building|\
+^###|\
 ^CRC|\
+^make|\
 ^Setup|\
 ^System|\
 ^Kernel|\
+^writing|\
 ^scripts|\
-^make)" $@
+^Generating)"
