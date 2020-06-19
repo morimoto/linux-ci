@@ -188,22 +188,35 @@ class config(file):
         import linecache
 
         self._dir = "config"
+
         super(config, self).__init__(name)
 
-        if (not self.exist()):
-            self.die("not exist ({})".format(self.path()))
-
-        ret = re.match("(\w+)-.*", name)
+        ret = re.match("(\w+)-(.*)", name)
         if (not ret):
             self.die("unknown file name ({})".format(name))
 
         self._arch = ret.group(1)
+        self._command = None;
+
+        if (not self.exist()):
+            command = ret.group(2)
+            if (command == "allyesconfig" or
+                command == "allmodconfig"):
+                self._command = command;
+            else:
+                self.die("not exist ({})".format(self.path()))
 
     #--------------------
     # arch()
     #--------------------
     def arch(self):
         return self._arch
+
+    #--------------------
+    # command()
+    #--------------------
+    def command(self):
+        return self._command
 
 #====================================
 #

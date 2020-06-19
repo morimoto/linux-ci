@@ -56,9 +56,8 @@
 
 **  yaml/xx.yaml をベースにコンパイル対象等を設定 (オプション)
 
-	Linux-CI は config ファイルを元にコンパイルするが、
-	どの config を使用するかを選択する必要がある。
-	自分専用のコンパイルをする場合、コンパイル対象を yaml で記述する
+	Linux-CI は config フォルダ以下のファイルか
+	yaml/xxx.yaml を元にコンパイルする。
 
 	yaml/all-arch.yaml はサポート済みの全てのアーキテクチャで、
 	全てのドライバをコンパイルする設定が書いてあるが、
@@ -71,18 +70,17 @@
 		  ...
 		--------------------------
 
-	ここに書かれている x86-allyesconfig, x86-allmodconfig は
-	config フォルダ以下に見つけることが出来る。
-
 **  実行する
 
-		> make all-arch
+	config/xxx ファイルを使う場合は
 
-	とした場合、yaml/all-arch.yaml を使用し Linux-CI がスタートする
+		> make xxx
 
-		> make x86-allyesconfig
+	yaml/yyy を使う場合は
 
-	とした場合、config/x86-allyesconfig を使用し Linux-CI がスタートする
+		> make yyy
+
+	で、Linux-CI がスタートする
 
 	各コンパイルは binary 以下で実行され、
 	yaml/setup.yaml に log の設定があれば実行結果はそれぞれの
@@ -95,12 +93,6 @@
 	以下のコマンドを使う
 
 		> script/bkmake all-arch
-
-	または、yaml ファイルを書かなくても、以下の方法で個別に
-	実行する事も可能
-
-		> script/makefile.py -c sh-allyesconfig
-		> make
 
 ***	注意1
 
@@ -359,15 +351,8 @@
 
 **  target
 
-	コンパイルに使用する config ファイル
-	${LINUX-CI}/config 以下に配置されている必要が有ります。
-	自分専用 config を使いたい場合は、config 以下に保存して起きましょう。
+	コンパイルに使用するコマンド
+	「アーキテクチャ」と「コマンド」に分かれている
 
-* 管理
-
-	config/xxx-allyesconfig
-	config/xxx-allmodconfig
-
-	は、以下コマンドで自動的に更新可能
-
-		> make save_defconfig
+	target:
+	  - x86-allyesconfig

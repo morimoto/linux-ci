@@ -92,8 +92,13 @@ class makefile(base.base):
         self.write("	cd {};\\\n".format(bin.path()))
         self.write("	rm -fr log;\\\n")
         self.write("	../../script/mymake.py {};\\\n".format(config.arch()))
-        self.write("	cp {} .config;\\\n".format(config.path()))
-        self.write("	./mymake olddefconfig;\\\n")
+
+        if (config.command()):
+            self.write("	./mymake {};\\\n".format(config.command()))
+        # use config file if exist
+        else:
+            self.write("	cp {} .config;\\\n".format(config.path()))
+            self.write("	./mymake olddefconfig;\\\n")
 
         # *Note*
         #
@@ -130,38 +135,6 @@ class makefile(base.base):
 
         for config in yaml.each_target():
             self.create_make(config)
-
-        self.done = 1
-
-    #--------------------
-    # create_save_config()
-    #--------------------
-    def create_save_config(self):
-
-        self.write("all:")
-
-        for arch in self.arch_all():
-            for config in ["allyesconfig", "allmodconfig"]:
-                self.write(" {}-{}".format(arch, config))
-        self.write("\n\n")
-
-        for arch in self.arch_all():
-
-            gcc.gcc(arch).install()
-
-            for config in ["allyesconfig", "allmodconfig"]:
-                cfg = base.config("{}-{}".format(arch, config))
-                bin = base.binary(cfg)
-
-                self.create_target_name(cfg)
-                self.create_bin_dir(cfg)
-
-                self.write("	cd {};\\\n".format(bin.path()))
-                self.write("	../../script/mymake.py {};\\\n".format(arch))
-                self.write("	./mymake {};\\\n".format(config))
-                self.write("	./mymake savedefconfig;\\\n")
-                self.write("	mv defconfig {}\n".format(cfg.path()))
-                self.write("\n")
 
         self.done = 1
 
@@ -233,9 +206,6 @@ if __name__=='__main__':
     parser.add_option('-c', '--config', dest='config',
                       action='store_true', default=False,
                       help='create makefile via config')
-    parser.add_option('-s', '--save', dest='save',
-                      action='store_true', default=False,
-                      help='save configs')
     parser.add_option('-p', '--push', dest='push',
                       action='store_true', default=False,
                       help='git push makefile')
@@ -248,8 +218,6 @@ if __name__=='__main__':
         mk.create_via_yaml(args[0])
     elif (option.config):
         mk.create_via_config(base.config(args[0]))
-    elif (option.save):
-        mk.create_save_config()
     elif (option.push):
         mk.create_git_push(args)
     else:

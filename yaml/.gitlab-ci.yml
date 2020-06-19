@@ -21,7 +21,7 @@ variables:
     - cd linux-ci
     - git checkout ${BRANCH}
     - echo "kernel:${NULL} ../"	 > yaml/setup.yaml
-    - ./script/makefile.py -c ${CONFIG}
+    - ./script/makefile.py -y ${CONFIG}
     - cat make.ci
     - make
 
