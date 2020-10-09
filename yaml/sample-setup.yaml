@@ -10,6 +10,7 @@ log: 1
 # mail: Email address
 #
 # You need to setup ~/.mailrc
+# and log: 1 settings
 #mail: your@mail.com
 
 # logerr:
