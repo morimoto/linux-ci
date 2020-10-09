@@ -200,11 +200,7 @@ class config(file):
 
         if (not self.exist()):
             command = ret.group(2)
-            if (command == "allyesconfig" or
-                command == "allmodconfig"):
-                self._command = command;
-            else:
-                self.die("not exist ({})".format(self.path()))
+            self._command = command;
 
     #--------------------
     # arch()
