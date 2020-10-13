@@ -76,7 +76,7 @@
 
 		> make xxx
 
-	yaml/yyy を使う場合は
+	yaml/yyy.yaml を使う場合は
 
 		> make yyy
 
