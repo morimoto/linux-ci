@@ -30,6 +30,7 @@ egrep -v "(\
 ^  LOGO|\
 ^  YACC|\
 ^  MKELF|\
+^  MKREG|\
 ^  BIN2C|\
 ^  BUILD|\
 ^  MKCAP|\
@@ -57,6 +58,7 @@ egrep -v "(\
 ^  SHIPPED|\
 ^  STUBCPY|\
 ^  HDRINST|\
+^  HYPCOPY|\
 ^  MODPOST|\
 ^  MODINFO|\
 ^  DESCEND|\
