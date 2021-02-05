@@ -341,6 +341,10 @@
 
 ** ccache (オプション)
 
+	ccache のインストールが必要です
+
+		> sudo apt install ccache
+
 	コンパイル時に ccache を使うかどうかの設定です
 	1 を指定する事で ccache を使用します
 
