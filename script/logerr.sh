@@ -29,6 +29,7 @@ egrep -v "(\
 ^  LINK|\
 ^  LOGO|\
 ^  YACC|\
+^  SYNC|\
 ^  MKELF|\
 ^  MKREG|\
 ^  BIN2C|\
@@ -59,16 +60,18 @@ egrep -v "(\
 ^  STUBCPY|\
 ^  HDRINST|\
 ^  HYPCOPY|\
+^  HOSTCXX|\
+^  HDRTEST|\
 ^  MODPOST|\
 ^  MODINFO|\
 ^  DESCEND|\
-^  HDRTEST|\
 ^  OBJCOPY|\
 ^  EXPORTS|\
 ^  VOFFSET|\
 ^  MKPIGGY|\
 ^  ZOFFSET|\
 ^  PERLASM|\
+^  PROMCHK|\
 ^  SORTTAB|\
 ^  MKREGTABLE|\
 ^  HYPERCALLS|\
