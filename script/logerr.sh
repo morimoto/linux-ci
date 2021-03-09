@@ -48,6 +48,7 @@ egrep -v "(\
 ^  RELOCS|\
 ^  HOSTCC|\
 ^  HOSTLD|\
+^  HYPREL|\
 ^  PASYMS|\
 ^  SYSTBL|\
 ^  SYSHDR|\
