@@ -81,6 +81,12 @@ class makefile(base.base):
         log  = self.setup.val("log")
         jobs = self.setup.val("jobs")
 
+        if (jobs > 20):
+            self.print("========================")
+            self.print("jobs number is too big!")
+            self.print("========================")
+            sys.exit(1)
+
         jobs = " -j {}".format(jobs) if (jobs) else ""
 
         gcc.gcc(config.arch()).install()
