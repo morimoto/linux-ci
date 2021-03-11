@@ -21,6 +21,7 @@ egrep -v "(\
 ^  DTB|\
 ^  LEX|\
 ^  CALL|\
+^  COPY|\
 ^  GZIP|\
 ^  KSYM|\
 ^  VDSO|\
@@ -29,6 +30,7 @@ egrep -v "(\
 ^  LINK|\
 ^  LOGO|\
 ^  YACC|\
+^  PERL|\
 ^  SYNC|\
 ^  MKELF|\
 ^  MKREG|\
