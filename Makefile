@@ -13,9 +13,5 @@ ${CONFIG}:
 	./script/makefile.py -c ${@}
 	make
 
-save_defconfig:
-	./script/makefile.py -s
-	make
-
 clean:
 	rm make.ci
