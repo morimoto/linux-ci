@@ -46,18 +46,10 @@
 		> cp yaml/sample-setup.yaml yaml/setup.yaml
 		> vi yaml/setup.yaml
 
-**  自分用 Linux Kernel config を作成する (オプション)
-
-	自分専用にコンパイルテストしたい config があるなら、
-	それを作成し、config フォルダ以下に適当な名前で配置する
-	とりあえず試すだけなら不要
-
-		> cp ${YOUR}/.config config/my-config
-
 **  yaml/xx.yaml をベースにコンパイル対象等を設定 (オプション)
 
-	Linux-CI は config フォルダ以下のファイルか
-	yaml/xxx.yaml を元にコンパイルする。
+	Linux-CI は config を指定するか yaml/xxx.yaml を元に
+	コンパイルします。
 
 	yaml/all-arch.yaml はサポート済みの全てのアーキテクチャで、
 	全てのドライバをコンパイルする設定が書いてあるが、
@@ -72,9 +64,9 @@
 
 **  実行する
 
-	config/xxx ファイルを使う場合は
+	自前の config ファイルを使う場合は
 
-		> make xxx
+		> make CONFIG=xxx config
 
 	yaml/yyy.yaml を使う場合は
 

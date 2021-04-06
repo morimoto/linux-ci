@@ -188,15 +188,29 @@ class config(file):
     def __init__(self, name):
         import linecache
 
-        super(config, self).__init__("{}/config/{}".format(self.dir_top(), name))
+        super(config, self).__init__(name)
 
-        ret = re.match("(\w+)-(.*)", name)
+        #
+        # assumed name
+        #	xxxx/xxxx/arch-target
+        #
+        # or see below
+        #	arch-{command}
+        #
+        ret = re.match("(\w+)-(.*)", self.name())
         if (not ret):
-            self.die("unknown file name ({})".format(name))
+            self.die("file should arch-target ({})".format(self.name()))
 
         self._arch = ret.group(1)
         self._command = None;
 
+        #
+        # command
+        # ex)
+        #	xxx-allyesconfig
+        #	xxx-allmodconfig
+        #	...
+        #
         if (not self.exist()):
             command = ret.group(2)
             self._command = command;
