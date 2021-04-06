@@ -226,7 +226,6 @@ class binary(file):
     #--------------------
     def __init__(self, config):
         self._dir = "binary"
-        self._config = config
 
         super(binary, self).__init__(config.name())
 
