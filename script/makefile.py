@@ -16,19 +16,20 @@ import gcc
 # makefile
 #
 #====================================
-class makefile(base.base):
+class makefile(base.file):
     #--------------------
     # __init__()
     #--------------------
     def __init__(self):
         self.makefile = None
 
-        self._file = "{}/make.ci".format(self.dir_top())
+        self._dir = "."
+        super(makefile, self).__init__("make.ci")
         if (self.exist()):
             self.die("previous make not yet finished")
 
         self.setup    = base.yml(self.file_setup())
-        self.makefile = open(self._file, mode='w')
+        self.makefile = open(self.path(), mode='w')
         self.done     = 0
 
     #--------------------
@@ -42,12 +43,6 @@ class makefile(base.base):
                 self.print("========================")
                 self.print("do make clean")
                 self.print("========================")
-
-    #--------------------
-    # exist()
-    #--------------------
-    def exist(self):
-        return os.path.exists(self._file)
 
     #--------------------
     # write()
