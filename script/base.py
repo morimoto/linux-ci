@@ -146,8 +146,10 @@ class file(base):
     #--------------------
     # __init__()
     #--------------------
-    def __init__(self, name):
-        self._name = name
+    def __init__(self, filename):
+        fullpath = os.path.abspath(filename)
+        self._dir  = os.path.dirname(fullpath)
+        self._name = os.path.basename(fullpath)
 
     #--------------------
     # name()
@@ -159,8 +161,7 @@ class file(base):
     # dir()
     #--------------------
     def dir(self):
-        return "{}/{}".format(self.dir_top(),
-                              self._dir)
+        return self._dir
 
     #--------------------
     # path()
@@ -187,9 +188,7 @@ class config(file):
     def __init__(self, name):
         import linecache
 
-        self._dir = "config"
-
-        super(config, self).__init__(name)
+        super(config, self).__init__("{}/config/{}".format(self.dir_top(), name))
 
         ret = re.match("(\w+)-(.*)", name)
         if (not ret):
@@ -225,9 +224,7 @@ class binary(file):
     # __init__()
     #--------------------
     def __init__(self, config):
-        self._dir = "binary"
-
-        super(binary, self).__init__(config.name())
+        super(binary, self).__init__("{}/binary/{}".format(self.dir_top(), config.name()))
 
 #====================================
 # chdir

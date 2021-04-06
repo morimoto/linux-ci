@@ -23,8 +23,7 @@ class makefile(base.file):
     def __init__(self):
         self.makefile = None
 
-        self._dir = "."
-        super(makefile, self).__init__("make.ci")
+        super(makefile, self).__init__("{}/{}".format(self.dir_top(), "make.ci"))
         if (self.exist()):
             self.die("previous make not yet finished")
 
