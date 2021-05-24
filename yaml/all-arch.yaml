@@ -13,3 +13,5 @@ target:
   - powerpc-allmodconfig
   - xtensa-allyesconfig
   - xtensa-allmodconfig
+  - sparc-allyesconfig
+  - sparc-allmodconfig

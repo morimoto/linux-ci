@@ -33,6 +33,7 @@ class base:
         "mips":		{"gcc":"mips"},
         "powerpc":	{"gcc":"powerpc64"},
         "xtensa":	{"gcc":"xtensa"},
+        "sparc":	{"gcc":"sparc"},
     };
 
     #--------------------
