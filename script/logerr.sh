@@ -27,6 +27,7 @@ egrep -v "(\
 ^  VDSO|\
 ^  TEST|\
 ^  WRAP|\
+^  PERL|\
 ^  LINK|\
 ^  LOGO|\
 ^  YACC|\
@@ -42,6 +43,7 @@ egrep -v "(\
 ^  SYSNR|\
 ^  MUNGE|\
 ^  MKDIR|\
+^  DTOVL|\
 ^  POLICY|\
 ^  SYSMAP|\
 ^  UNROLL|\
