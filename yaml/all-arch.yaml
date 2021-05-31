@@ -15,3 +15,5 @@ target:
   - xtensa-allmodconfig
   - sparc-allyesconfig
   - sparc-allmodconfig
+  - openrisc-allyesconfig
+  - openrisc-allmodconfig

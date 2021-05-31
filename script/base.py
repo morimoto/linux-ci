@@ -34,6 +34,7 @@ class base:
         "powerpc":	{"gcc":"powerpc64"},
         "xtensa":	{"gcc":"xtensa"},
         "sparc":	{"gcc":"sparc"},
+        "openrisc":	{"gcc":"or1k"},
     };
 
     #--------------------
