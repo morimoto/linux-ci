@@ -311,14 +311,6 @@
 	そのため、log: 1 の設定が必要
 	その際には、~/.mailrc の設定が別途必要になります
 
-	mail コマンドは s-nail を想定しているが、
-	ubuntu ではインストールしても mail コマンドにならないので
-	リンクを張る
-
-		> sudo apt install s-nail
-		> cd /usr/bin
-		> sudo ln -s s-nail mail
-
 	以下のコマンドを実行して、メールが届けば OK
 
 	> echo "Test mail" | mail -s "Test" xxx@xxx.com
