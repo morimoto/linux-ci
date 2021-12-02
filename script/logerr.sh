@@ -61,8 +61,10 @@ egrep -v "(\
 ^  BOOTAS|\
 ^  BOOTCC|\
 ^  BOOTAR|\
+^  INSTALL|\
 ^  SHIPPED|\
 ^  STUBCPY|\
+^  SYMLINK|\
 ^  HDRINST|\
 ^  HYPCOPY|\
 ^  HOSTCXX|\
