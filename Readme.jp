@@ -67,9 +67,12 @@
 
 **  実行する
 
-	自前の config ファイルを使う場合は
+	自前の config ファイルを使う場合は目的の .config を <arch>-<name>
+	と言うファイル名で適当な場所に保存し、以下を実行
+	例) arm64 で sound 用に特化した .config を使う場合
 
-		> make CONFIG=xxx config
+		> cp ${LINUX}/.config /tmp/arm64-sound
+		> make CONFIG=/tmp/arm64-sound config
 
 	yaml/yyy.yaml を使う場合は
 
