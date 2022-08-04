@@ -70,12 +70,14 @@ class gcc(base.base):
     #--------------------
     # download()
     #--------------------
-    def download(self):
+    def download(self, gcc):
         dir = self.dir_download()
 
         if (os.path.exists("{}/{}".format(
                 dir, self.tar_name()))):
             return
+
+        self.print("download {}".format(gcc))
 
         self.run("wget -q -P {} {}".format(
             dir, self.url()))
@@ -83,11 +85,9 @@ class gcc(base.base):
     #--------------------
     # unpack()
     #--------------------
-    def unpack(self):
+    def unpack(self, gcc):
         ddir = self.dir_download()
         idir = self.dir_install()
-
-        gcc = "gcc-{}-nolibc/{}".format(self.ver(), self.name())
 
         if (os.path.exists("{}/{}".format(idir, gcc))):
             return
@@ -101,8 +101,10 @@ class gcc(base.base):
     # install()
     #--------------------
     def install(self):
-        self.download()
-        self.unpack()
+        gcc = "gcc-{}-nolibc/{}".format(self.ver(), self.name())
+
+        self.download(gcc)
+        self.unpack(gcc)
 
 #====================================
 #
