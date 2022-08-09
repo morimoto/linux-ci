@@ -41,6 +41,7 @@ egrep -v "(\
 ^  DTOVL|\
 ^  MUNGE|\
 ^  MKDIR|\
+^  MKMAP|\
 ^  MKELF|\
 ^  MKREG|\
 ^  MKCAP|\
