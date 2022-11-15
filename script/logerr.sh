@@ -11,6 +11,7 @@ egrep -v "(\
 ^  AS|\
 ^  CC|\
 ^  LD|\
+^  NM|\
 ^  CHK|\
 ^  CAT|\
 ^  DTB|\
