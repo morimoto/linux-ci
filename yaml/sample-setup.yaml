@@ -28,6 +28,11 @@ log: 1
 # 0: not use ccache
 # ccache: 1
 
+# warning
+# 1: use W=1
+# 0: not use W=
+#warning: 1
+
 # git-hook update settings
 #
 #	> cd linux-ci
