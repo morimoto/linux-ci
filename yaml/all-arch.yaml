@@ -9,6 +9,8 @@ target:
   - sh-allmodconfig
   - mips-allyesconfig
   - mips-allmodconfig
+  - m68k-allyesconfig
+  - m68k-allmodconfig
   - powerpc-allyesconfig
   - powerpc-allmodconfig
   - xtensa-allyesconfig

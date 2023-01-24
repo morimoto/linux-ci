@@ -1,0 +1,3 @@
+target:
+  - m68k-allyesconfig
+  - m68k-allmodconfig

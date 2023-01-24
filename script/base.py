@@ -31,6 +31,7 @@ class base:
         "arm64":	{"gcc":"aarch64"},
         "sh":		{"gcc":"sh4"},
         "mips":		{"gcc":"mips"},
+        "m68k":		{"gcc":"m68k"},
         "powerpc":	{"gcc":"powerpc64"},
         "xtensa":	{"gcc":"xtensa"},
         "sparc":	{"gcc":"sparc"},
