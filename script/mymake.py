@@ -35,7 +35,7 @@ class mymake(base.base):
         warning = "W=1" if (warning) else ""
 
         with open(file, mode="w") as f:
-            f.write("ARCH={} make {} CROSS_COMPILE=\"{}{}\" $@".
+            f.write("ARCH={} make {} CROSS_COMPILE=\"{}{}\" DTC_FLAGS=--symbols $@".
                     format(self._arch, warning, ccache, g.gcc()))
         os.chmod(file, 0o755)
 
