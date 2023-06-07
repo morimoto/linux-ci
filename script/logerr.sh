@@ -100,4 +100,5 @@ egrep -v "(\
 ^Kernel|\
 ^writing|\
 ^scripts|\
-^Generating)"
+^Generating|\
+.*\.dt[bs][io]?\:)"
