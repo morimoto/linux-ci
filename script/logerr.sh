@@ -22,6 +22,7 @@ egrep -v "(\
 ^  ITS|\
 ^  ITB|\
 ^  LEX|\
+^  PAD|\
 ^  CALL|\
 ^  CERT|\
 ^  COPY|\
