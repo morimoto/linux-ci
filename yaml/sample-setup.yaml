@@ -21,7 +21,7 @@ log: 1
 # jobs: number of jobs
 #
 # used as "make -j ${jobs}"
-#jobs: 12
+jobs: 12
 
 # ccache
 # 1: use ccache

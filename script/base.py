@@ -200,7 +200,7 @@ class config(file):
         # or see below
         #	arch-{command}
         #
-        ret = re.match("(\w+)-(.*)", self.name())
+        ret = re.match("(\\w+)-(.*)", self.name())
         if (not ret):
             self.die("file should arch-target ({})".format(self.name()))
 
