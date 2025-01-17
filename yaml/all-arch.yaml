@@ -13,8 +13,6 @@ target:
   - m68k-allmodconfig
   - powerpc-allyesconfig
   - powerpc-allmodconfig
-  - xtensa-allyesconfig
-  - xtensa-allmodconfig
   - sparc-allyesconfig
   - sparc-allmodconfig
   - openrisc-allyesconfig

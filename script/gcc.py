@@ -15,7 +15,7 @@ import base
 #====================================
 class gcc(base.base):
     def ver(self):
-        return "12.2.0"
+        return "14.2.0"
 
     def dir_download(self):
         return "{}/tools/download".format(self.dir_top())
