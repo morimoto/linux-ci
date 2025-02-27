@@ -7,6 +7,8 @@ target:
   - arm64-allmodconfig
   - sh-allyesconfig
   - sh-allmodconfig
+  - s390-allyesconfig
+  - s390-allmodconfig
   - mips-allyesconfig
   - mips-allmodconfig
   - m68k-allyesconfig

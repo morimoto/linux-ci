@@ -30,6 +30,7 @@ class base:
         "arm":		{"gcc":"arm",	"gcc_opt":"-gnueabi"},
         "arm64":	{"gcc":"aarch64"},
         "sh":		{"gcc":"sh4"},
+        "s390":		{"gcc":"s390"},
         "mips":		{"gcc":"mips"},
         "m68k":		{"gcc":"m68k"},
         "powerpc":	{"gcc":"powerpc64"},
