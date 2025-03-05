@@ -23,6 +23,7 @@ egrep -v "(\
 ^  ITB|\
 ^  LEX|\
 ^  PAD|\
+^  OVL|\
 ^  CALL|\
 ^  CERT|\
 ^  COPY|\
@@ -63,11 +64,13 @@ egrep -v "(\
 ^  SYSTBL|\
 ^  SYSHDR|\
 ^  REMOVE|\
+^  RSTRIP|\
 ^  CPUSTR|\
 ^  BOOTAS|\
 ^  BOOTCC|\
 ^  BOOTAR|\
 ^  INSTALL|\
+^  IPE_POL|\
 ^  SEEDHDR|\
 ^  SHIPPED|\
 ^  STUBCPY|\
