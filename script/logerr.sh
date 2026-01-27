@@ -38,6 +38,7 @@ egrep -v "(\
 ^  YACC|\
 ^  PERL|\
 ^  SYNC|\
+^  INFO:|\
 ^  BIN2C|\
 ^  BUILD|\
 ^  CONMK|\
@@ -84,6 +85,7 @@ egrep -v "(\
 ^  OBJCOPY|\
 ^  PERLASM|\
 ^  PROMCHK|\
+^  SECTCMP|\
 ^  SORTTAB|\
 ^  SEEDHDR|\
 ^  SHIPPED|\
@@ -92,6 +94,7 @@ egrep -v "(\
 ^  VOFFSET|\
 ^  ZOFFSET|\
 ^  Building|\
+^  DUMPSYMS|\
 ^  HYPERCALLS|\
 ^  MKREGTABLE|\
 ^  EXTRACT_CERTS|\
