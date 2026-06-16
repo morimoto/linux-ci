@@ -3,9 +3,17 @@
 #
 # gcc
 #
+#	Install latest version gcc for all arch
+#	> ./script/gcc.py
+#
+#	Install x86, arm64 gcc 14.30.0
+#	> ./script/gcc.py --arch x86,arm64 --ver 14.3.0
+#
 # 2019/11/18 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 #===============================
 import os
+import sys
+import argparse
 
 import base
 #====================================
@@ -14,8 +22,10 @@ import base
 #
 #====================================
 class gcc(base.base):
+    __latest_ver = "16.1.0"
+
     def ver(self):
-        return "14.2.0"
+        return self.__ver;
 
     def dir_download(self):
         return "{}/tools/download".format(self.dir_top())
@@ -32,11 +42,14 @@ class gcc(base.base):
     #--------------------
     # __init__()
     #--------------------
-    def __init__(self, arch):
+    def __init__(self, arch, ver = None):
         if (not arch in self.arch_all()):
             self.die("not supported arch ({})".format(arch))
 
         self.arch = arch
+        self.__ver = self.__latest_ver
+        if (ver):
+            self.__ver = ver
 
     #--------------------
     # name()
@@ -73,14 +86,23 @@ class gcc(base.base):
     def download(self, gcc):
         dir = self.dir_download()
 
+        # remove tmp dir
+        self.run("rm -fr {}-tmp".format(dir))
+
         if (os.path.exists("{}/{}".format(
                 dir, self.tar_name()))):
             return
 
         self.print("download {}".format(gcc))
 
-        self.run("wget -q -P {} {}".format(
-            dir, self.url()))
+        # download it to tmp dir
+        ret = self.run("wget -q -P {}-tmp {}".format(dir, self.url()))
+        if (ret == 0):
+            self.run("mkdir -p {}".format(dir))
+            self.run("mv {}-tmp/{} {}/{}".format(dir, self.tar_name(),
+                                                 dir, self.tar_name()))
+        else:
+            self.run("rm -fr {}-tmp".format(dir))
 
     #--------------------
     # unpack()
@@ -112,9 +134,19 @@ class gcc(base.base):
 #
 #====================================
 if __name__=='__main__':
-    for arch in base.base().arch_all():
-        g = gcc(arch)
-        try:
-            g.install()
-        except:
-            g.die("gcc failed")
+    ver = None
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-a","--arch", help="select target arch. If not, all arch will be selected")
+    parser.add_argument("-v","--ver", help="select target gcc version. If not, latest version will be selected")
+    args = parser.parse_args()
+
+    arch_list = base.base().arch_all()
+    if (args.arch):
+        arch_list = args.arch.split(",")
+
+    if (args.ver):
+        ver = args.ver
+
+    for arch in arch_list:
+        gcc(arch, ver).install()
