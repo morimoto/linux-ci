@@ -1,3 +1,0 @@
-target:
-  - s390-allyesconfig
-  - s390-allmodconfig

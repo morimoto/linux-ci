@@ -1,4 +1,0 @@
-target:
-  - arm64-defconfig
-  - arm64-allyesconfig
-  - arm64-allmodconfig
