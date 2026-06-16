@@ -41,8 +41,6 @@ class base:
 
     #--------------------
     # exit()
-    #
-    # it is used not under try-except
     #--------------------
     def die(self, text):
         self.print("========================")
@@ -52,26 +50,18 @@ class base:
 
     #--------------------
     # error()
-    #
-    # it is used under try-except
     #--------------------
     def error(self, text):
         self.print("========================")
         self.print(text)
         self.print("========================")
-        raise Exception(text)
+        sys.exit(1)
 
     #--------------------
     # dir_top()
     #--------------------
     def dir_top(self):
         return base.__top
-
-    #--------------------
-    # file_setup()
-    #--------------------
-    def file_setup(self):
-        return "{}/yaml/setup.yaml".format(self.dir_top())
 
     #--------------------
     # arch_all()
@@ -126,6 +116,9 @@ class yml:
 
         with open(file) as f:
             self.data = yaml.safe_load(f)
+
+        if (self.data is None):
+            base().die("setup.yaml has no settings")
 
     #--------------------
     # val()
