@@ -26,19 +26,14 @@ class mymake(base.base):
     # install()
     #--------------------
     def install(self):
-        ccache = base.yml(self.file_setup()).val("ccache")
-        warning= base.yml(self.file_setup()).val("warning")
         g = gcc.gcc(self._arch)
 
         file =  "mymake"
-        ccache = "ccache " if (ccache) else ""
-        warning = "W=1" if (warning) else ""
 
-        with open(file, mode="w") as f:
-            f.write("PWD=`readlink -f \"$0\" | xargs dirname`\n" +
-                    "${PWD}/../../script/mymake_title.sh\n" +
-                    "ARCH={} make {} CROSS_COMPILE=\"{}{}\" DTC_FLAGS=--symbols $@".
-                    format(self._arch, warning, ccache, g.gcc()))
+        self.run("cp {}/script/mymake_template ./{}".format(self.dir_top(), file))
+        with open(file, mode="a") as f:
+            f.write("ARCH={} make CROSS_COMPILE=\"ccache {}\" DTC_FLAGS=--symbols $@".
+                    format(self._arch, g.gcc()))
         os.chmod(file, 0o755)
 
 #====================================
