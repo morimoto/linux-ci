@@ -17,23 +17,17 @@ import gcc
 #====================================
 class mymake(base.base):
     #--------------------
-    # __init__()
-    #--------------------
-    def __init__(self, arch):
-        self._arch = arch
-
-    #--------------------
     # install()
     #--------------------
-    def install(self):
-        g = gcc.gcc(self._arch)
+    def install(self, arch):
+        g = gcc.gcc(arch)
 
         file =  "mymake"
 
         self.run("cp {}/script/mymake_template ./{}".format(self.dir_top(), file))
         with open(file, mode="a") as f:
             f.write("ARCH={} make CROSS_COMPILE=\"ccache {}\" DTC_FLAGS=--symbols $@".
-                    format(self._arch, g.gcc()))
+                    format(arch, g.gcc()))
         os.chmod(file, 0o755)
 
 #====================================
@@ -42,4 +36,4 @@ class mymake(base.base):
 #
 #====================================
 if __name__=='__main__':
-    mymake(sys.argv[1]).install()
+    mymake().install(sys.argv[1])
