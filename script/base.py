@@ -27,16 +27,23 @@ class base:
     __architecture = {
         # arch		gcc		gcc_opt
         "x86":		{"gcc":"x86_64"},
+        "alpha":	{"gcc":"alpha"},
+        "arc":		{"gcc":"arc"},
+        "csky":		{"gcc":"csky"},
         "arm":		{"gcc":"arm",	"gcc_opt":"-gnueabi"},
         "arm64":	{"gcc":"aarch64"},
+        "loongarch":	{"gcc":"loongarch64"},
         "sh":		{"gcc":"sh4"},
         "s390":		{"gcc":"s390"},
         "mips":		{"gcc":"mips"},
         "m68k":		{"gcc":"m68k"},
+        "microblaze":	{"gcc":"microblaze"},
         "powerpc":	{"gcc":"powerpc64"},
         "xtensa":	{"gcc":"xtensa"},
         "sparc":	{"gcc":"sparc"},
+        "parisc":	{"gcc":"hppa"},
         "openrisc":	{"gcc":"or1k"},
+        "riscv":	{"gcc":"riscv64"},
     };
 
     #--------------------
