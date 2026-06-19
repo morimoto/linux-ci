@@ -76,6 +76,7 @@ class base:
         if (arch in base.__architecture):
             return base.__architecture[arch];
         self.error("{} is not supported".format(arch))
+        return None
 
     #--------------------
     # print
