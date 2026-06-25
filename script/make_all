@@ -1,0 +1,60 @@
+#! /bin/bash
+#===============================
+#
+# make_all
+#
+#	This script is assumed to be used at build dir.
+#	.config on each dir is already done
+#
+#	> cd ${LINUX}/build
+#	> make_all -j 12
+#
+#	It has special option
+#		config_fresh:	refresh configs on each dir
+#
+# 2026/06/16 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+#===============================
+TOP=`readlink -f "$0" | xargs dirname | xargs dirname`
+DIRS=`ls`
+
+func_make() {
+	./mymake $@ 2>&1 | tee log
+
+	# escape mymake info
+	tail -n +4 log | ${TOP}/script/logerr.sh > logerr
+	[ 0 -eq `wc -l < logerr` ] && rm logerr
+}
+
+func_config_fresh() {
+	__dir=`basename ${PWD}`
+	__config="${__dir#*-}"
+
+	echo "-----------------------"
+	./mymake ${__config}
+}
+
+case $1 in
+	config_fresh)
+		func=func_config_fresh;;
+	*)
+		func=func_make;;
+esac
+
+interrupted=0
+trap 'interrupted=1' INT
+
+for dir in ${DIRS}
+do
+	if [ -d "${dir}" ]; then
+	(
+		cd ${dir}
+		${func} $@
+
+		# care Ctrl-C
+		[ $interrupted -ne 0 ] && exit
+	)
+	# care Ctrl-C
+	[ $interrupted -ne 0 ] && exit
+
+	fi
+done
