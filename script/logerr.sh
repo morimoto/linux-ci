@@ -70,6 +70,7 @@ egrep -v "(\
 ^  SORTEX|\
 ^  UNROLL|\
 ^  VDSO2C|\
+^  XZKERN|\
 ^  EXPORTS|\
 ^  DESCEND|\
 ^  Kernel:|\
