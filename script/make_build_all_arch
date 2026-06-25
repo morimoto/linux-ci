@@ -1,0 +1,45 @@
+#! /bin/bash
+#===============================
+#
+# make_build_all_arch
+#
+#	> make_build_all_arch			# build 以下に全 arch 全 defconfig を作る
+#
+# 2026/06/16 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+#===============================
+TOP=`readlink -f "$0" | xargs dirname | xargs dirname`
+
+ARCH="\
+x86
+alpha
+arc
+csky
+arm
+arm64
+loongarch
+sh
+s390
+mips
+m68k
+microblaze
+powerpc
+xtensa
+sparc
+parisc
+openrisc
+riscv"
+for arch in ${ARCH}
+do
+	[ ! -d arch/${arch} ] && continue
+
+	DEFCONFIGS=`ls arch/${arch}/configs`
+	for defconfig in ${DEFCONFIGS}
+	do
+		# ignore "xxx.config"
+		[[ "${defconfig}" == *.* ]] && continue
+
+		${TOP}/script/make_build -d ${defconfig} ${arch}
+	done
+	${TOP}/script/make_build -d allmodconfig ${arch}
+	${TOP}/script/make_build -d allyesconfig ${arch}
+done
