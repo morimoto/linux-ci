@@ -1,0 +1,44 @@
+#! /bin/bash
+#===============================
+#
+# make_build
+#
+#	> make_build arm64			# build/arm64-defconfig が作られる
+#	> make_build -g 14.3.0 arm64		# gcc 14.3.0 を使う
+#	> make_build -d allmodconfig arm64	# allmodconfig を使い
+#						# arm64-allmodconfig が作られる
+#
+# 2026/06/16 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+#===============================
+TOP=`readlink -f "$0" | xargs dirname | xargs dirname`
+
+gcc=
+defconfig="allyesconfig"
+
+while getopts "g:d:" OPT
+do
+  case $OPT in
+     g) gcc="-v ${OPTARG}";;
+     d) defconfig=${OPTARG};;
+  esac
+done
+shift $((OPTIND - 1))
+
+arch=$1
+
+[ x${arch} = x ]	&& echo "no arch ($arch)"	&& exit
+[ ! -d arch/${arch} ]	&& echo "no such arch ($arch)"	&& exit
+[ "allyesconfig" != ${defconfig} ] &&\
+[ "allmodconfig" != ${defconfig} ] &&\
+[ ! -f arch/${arch}/configs/${defconfig} ] &&\
+			   echo "no such defconfig ($defconfig)" && exit
+
+echo "================"
+echo " arch:   ${arch}"
+echo " config: ${defconfig}"
+echo "================"
+
+make O=build/${arch}-${defconfig} allyesconfig
+cd build/${arch}-${defconfig}
+${TOP}/script/mymake.py ${arch}
+${TOP}/script/gcc.py -a ${arch} ${gcc}
