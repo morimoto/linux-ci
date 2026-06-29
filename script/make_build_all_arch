@@ -38,8 +38,8 @@ do
 		# ignore "xxx.config"
 		[[ "${defconfig}" == *.* ]] && continue
 
-		${TOP}/script/make_build -d ${defconfig} ${arch}
+		${TOP}/script/make_build ${arch} ${defconfig}
 	done
-	${TOP}/script/make_build -d allmodconfig ${arch}
-	${TOP}/script/make_build -d allyesconfig ${arch}
+	${TOP}/script/make_build ${arch} allmodconfig
+	${TOP}/script/make_build ${arch} allyesconfig
 done
