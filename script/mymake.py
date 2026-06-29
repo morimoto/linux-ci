@@ -26,8 +26,15 @@ class mymake(base.base):
 
         self.run("cp {}/script/mymake_template ./{}".format(self.dir_top(), file))
         with open(file, mode="a") as f:
-            f.write("ARCH={} make CROSS_COMPILE=\"ccache {}\" DTC_FLAGS=--symbols $@".
-                    format(arch, g.gcc()))
+            f.write("ARCH={} make ".format(arch))
+            f.write("CROSS_COMPILE=\"ccache {}\" ".format(g.gcc()))
+
+            # parisc special
+            if (arch == "parisc"):
+                f.write("CROSS32_COMPILE=\"ccache {}\" ".format(g.gcc()))
+
+            f.write("DTC_FLAGS=--symbols $@\n")
+
         os.chmod(file, 0o755)
 
 #====================================
