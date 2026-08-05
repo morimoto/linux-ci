@@ -42,3 +42,4 @@ make O=build/${arch}-${defconfig} allyesconfig
 cd build/${arch}-${defconfig}
 ${TOP}/script/mymake.py ${arch}
 ${TOP}/script/gcc.py -a ${arch} ${gcc}
+./mymake ${defconfig}
