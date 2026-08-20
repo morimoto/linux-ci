@@ -22,7 +22,7 @@ import base
 #
 #====================================
 class gcc(base.base):
-    __latest_ver = "16.1.0"
+    __latest_ver = "16.2.0"
 
     def ver(self):
         return self.__ver;
